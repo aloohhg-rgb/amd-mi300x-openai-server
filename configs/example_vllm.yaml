@@ -1,0 +1,29 @@
+# rough starting point for one MI300X — expect to edit this
+# I haven't measured anything yet so don't treat numbers as gospel
+
+model:
+  id: "Qwen/Qwen2.5-72B-Instruct"  # swap freely
+  trust_remote_code: true
+  dtype: "auto"
+  download_dir: null  # point at a big disk if the image has one
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+
+runtime:
+  tensor_parallel_size: 1   # whole point of this experiment
+  gpu_memory_utilization: 0.90
+  max_model_len: 32768      # TODO: see what actually fits
+  max_num_seqs: 64
+  enforce_eager: false      # flip on if capture is cursed on ROCm
+
+quantization:
+  method: null  # try full precision first, 192GB is the fun part
+
+rocm:
+  # HIP_VISIBLE_DEVICES=0
+  notes: "confirm rocminfo before first serve or you'll waste an hour"
+
+smoke:
+  - "Reply with exactly: pong"
